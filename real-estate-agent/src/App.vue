@@ -1,6 +1,5 @@
 <template>
 
-  <DetailModal :forSale="forSale" :clickedIdx="clickedIdx" :modalOpen="modalOpen"/>
   
   <div class="menu">
     <a v-for="menu in menus" :key="menu">{{menu}}</a>
@@ -8,7 +7,16 @@
 
   <DiscountBanner></DiscountBanner>
 
-  <CardView v-for="item in forSale" :key="item" :forSale="forSale[item.id]"></CardView>
+  <transition name="fade">
+    <DetailModal @modalClose="modalClose()" 
+    :forSale="forSale" :clickedIdx="clickedIdx" :modalOpen="modalOpen"/>
+  </transition>
+
+  
+  <CardView @modalOpen="stateChange($event)" 
+  v-for="item in forSale" :key="item" :forSale="forSale[item.id]"></CardView>
+
+
 
 
   
@@ -68,6 +76,44 @@ export default {
   color: white;
   padding: 10px;
 }
+
+.start {
+  opacity: 0;
+  transition: all 0.7s;
+}
+
+.end {
+  opacity: 1;
+  transition: all 0.7s;
+}
+
+/* 작명-enter-from 
+  from : 애니메이션 동작 전 상태
+  active : 애니메이션 동작 중 상태, 대부분 transition.. 같은
+  to : 애니메이션 동작 후 상태
+*/
+.fade-enter-from{
+  /* transform: translateY(-1000px); */
+  opacity: 0;
+}
+.fade-enter-active{
+  transition: all 0.5s;
+}
+.fade-enter-to{
+  opacity: 1;
+}
+
+/* 작명-leave-from */
+.fade-leave-from{
+  opacity: 1;
+}
+.fade-leave-active{
+  transition: all 0.5s;
+}
+.fade-leave-to{
+  opacity: 0;
+}
+
 
 body {
   margin : 30;
