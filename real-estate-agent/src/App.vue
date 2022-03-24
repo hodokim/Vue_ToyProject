@@ -7,6 +7,9 @@
 
   <DiscountBanner></DiscountBanner>
 
+  <button @click="priceSort">가격순 정렬</button>
+  <button @click="sortBack">초기화</button>
+
   <transition name="fade">
     <DetailModal @modalClose="modalClose()" 
     :forSale="forSale" :clickedIdx="clickedIdx" :modalOpen="modalOpen"/>
@@ -35,6 +38,7 @@ export default {
   data() {
     return {
       clickedIdx : 0,
+      forSaleOri : [...forSaleData],
       forSale : forSaleData,
       menus : ['메인', '매물', 'About'],
       modalOpen : false,
@@ -52,6 +56,14 @@ export default {
     },
     modalClose(){
       this.modalOpen = false;
+    },
+    priceSort(){
+      this.forSale.sort(function(a,b){
+        return a.price - b.price;
+      })
+    },
+    sortBack(){
+      this.forSale = [...this.forSaleOri]
     }
   }
 }
